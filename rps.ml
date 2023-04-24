@@ -21,7 +21,8 @@ let make_choice strategy1 strategy2 log =
 (**
     returns the winner of two given strategies, Win iff strategy1 wins
 *)
-let rec winning_strategy health1 health2 log strategy1 strategy2 =
+let rec winning_strategy ?(health1 = 100) ?(health2 = 100) ?(log = []) strategy1
+    strategy2 =
   if health1 = 0 && health2 = 0 then Tie
   else if health1 <= 0 then Loss
   else if health2 <= 0 then Win
@@ -29,19 +30,19 @@ let rec winning_strategy health1 health2 log strategy1 strategy2 =
     let choice1, choice2 = make_choice strategy1 strategy2 log in
     if choice1 = beaten_by choice2 then
       winning_strategy
-        (health1 - damage choice2)
-        health2
-        ((choice1, choice2) :: log)
+        ~health1:(health1 - damage choice2)
+        ~health2
+        ~log:((choice1, choice2) :: log)
         strategy1 strategy2
     else if choice1 = counter_to choice2 then
-      winning_strategy health1
-        (health2 - damage choice1)
-        ((choice1, choice2) :: log)
+      winning_strategy ~health1
+        ~health2:(health2 - damage choice1)
+        ~log:((choice1, choice2) :: log)
         strategy1 strategy2
     else
       (* both players take damage in event of a tie to prevent infinite recursion *)
       winning_strategy
-        (health1 - damage choice2)
-        (health2 - damage choice1)
-        ((choice1, choice2) :: log)
+        ~health1:(health1 - damage choice2)
+        ~health2:(health2 - damage choice1)
+        ~log:((choice1, choice2) :: log)
         strategy1 strategy2
