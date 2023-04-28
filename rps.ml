@@ -20,12 +20,13 @@ let match_rps rock_outcome paper_outcome scissors_outcome choice =
   | Scissors -> scissors_outcome
 
 let string_of_rps = match_rps "Rock" "Paper" "Scissors"
+let string_of_log log = String.concat "" (List.map string_of_rps log)
 let counter_to = match_rps Paper Scissors Rock
 let beaten_by = match_rps Scissors Rock Paper
-let damage = match_rps 1 1 1
+let damage = match_rps 10 10 10
 let strategyRock _ _ = Rock
 let strategyPaper _ _ = Paper
-let strategyCounter log _ = match log with [ h ] -> counter_to h | _ -> Rock
+let strategyCounter _ log = match log with h :: _ -> counter_to h | [] -> Rock
 
 let make_choice strategy1 strategy2 log1 log2 =
   let choice1 = strategy1 log1 log2 in
@@ -51,13 +52,26 @@ let rec do_battle ?(debug = false) player1 player2 =
     in
     if choice1 = beaten_by choice2 then
       do_battle ~debug
-        { player1 with health = player1.health - damage choice2 }
-        player2
+        {
+          player1 with
+          health = player1.health - damage choice2;
+          log = choice1 :: player1.log;
+        }
+        { player2 with log = choice2 :: player2.log }
     else if choice1 = counter_to choice2 then
-      do_battle ~debug player1
+      do_battle ~debug
+        { player1 with log = choice1 :: player1.log }
         { player2 with health = player2.health - damage choice1 }
     else
       (* both players take damage in event of a tie to prevent infinite recursion *)
       do_battle ~debug
-        { player1 with health = player1.health - damage choice2 }
-        { player2 with health = player2.health - damage choice1 }
+        {
+          player1 with
+          health = player1.health - damage choice2;
+          log = choice1 :: player1.log;
+        }
+        {
+          player2 with
+          health = player2.health - damage choice1;
+          log = choice2 :: player2.log;
+        }

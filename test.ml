@@ -23,7 +23,7 @@ let tests =
              ~printer:string_of_result );
          ( "counterpick beats rock" >:: fun _ ->
            assert_equal Win
-             (do_battle ~debug:true playerCounter playerRock)
+             (do_battle playerCounter playerRock)
              ~printer:string_of_result );
        ]
 
