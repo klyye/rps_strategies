@@ -8,6 +8,7 @@ type player = {
   name : string;
   log : choice list;
   health : int;
+  rating : int;
 }
 
 let string_of_result res =
@@ -20,7 +21,8 @@ let match_rps rock_outcome paper_outcome scissors_outcome choice =
   | Scissors -> scissors_outcome
 
 let string_of_rps = match_rps "Rock" "Paper" "Scissors"
-let string_of_log log = String.concat "" (List.map string_of_rps log)
+let string_of_list to_string list = String.concat "" (List.map to_string list)
+let string_of_log = string_of_list string_of_rps
 let counter_to = match_rps Paper Scissors Rock
 let beaten_by = match_rps Scissors Rock Paper
 let damage = match_rps 10 10 10
@@ -75,3 +77,11 @@ let rec do_battle ?(debug = false) player1 player2 =
           health = player2.health - damage choice1;
           log = choice2 :: player2.log;
         }
+
+let rec all_pairs lst =
+  match lst with
+  | h :: t -> List.map (fun e -> (h, e)) t @ all_pairs t
+  | [] -> []
+
+(** TODO function that pits every strategy against every other strategy N^2 matches*)
+let play_all_combinations = ""
