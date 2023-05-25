@@ -1,4 +1,8 @@
-type result = Win | Loss | Tie
+module type mmr = sig
+  val update_rating : winning_rating:int -> losing_rating:int -> int * int
+end
 
-let update_rating rating1 rating2 result =
-  match result with Win -> rating1 + 1 | _ -> rating2 + 1
+module Incremental : mmr = struct
+  let update_rating ~winning_rating ~losing_rating =
+    (winning_rating - 1, losing_rating + 1)
+end

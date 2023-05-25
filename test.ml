@@ -12,11 +12,11 @@ let rps_tests =
   "test suite for rps"
   >::: [
          ( "paper beats rock" >:: fun _ ->
-           assert_equal Win
+           assert_equal P1
              (do_battle playerPaper playerRock)
              ~printer:string_of_result );
          ( "rock loses to paper" >:: fun _ ->
-           assert_equal Loss
+           assert_equal P2
              (do_battle playerRock playerPaper)
              ~printer:string_of_result );
          ( "rock ties to rock" >:: fun _ ->
@@ -24,7 +24,7 @@ let rps_tests =
              (do_battle playerRock playerRock)
              ~printer:string_of_result );
          ( "counterpick beats rock" >:: fun _ ->
-           assert_equal Win
+           assert_equal P1
              (do_battle playerCounter playerRock)
              ~printer:string_of_result );
        ]

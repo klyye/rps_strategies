@@ -1,7 +1,7 @@
 open Printf
 
 type choice = Rock | Paper | Scissors
-type result = Win | Loss | Tie
+type result = P1 | P2 | Tie
 
 type player = {
   strategy : choice list -> choice list -> choice;
@@ -12,7 +12,7 @@ type player = {
 }
 
 let string_of_result res =
-  match res with Win -> "Win" | Loss -> "Loss" | Tie -> "Tie"
+  match res with P1 -> "P1" | P2 -> "P2" | Tie -> "Tie"
 
 let match_rps rock_outcome paper_outcome scissors_outcome choice =
   match choice with
@@ -40,8 +40,8 @@ let make_choice strategy1 strategy2 log1 log2 =
 *)
 let rec do_battle ?(debug = false) player1 player2 =
   if player1.health = 0 && player2.health = 0 then Tie
-  else if player1.health <= 0 then Loss
-  else if player2.health <= 0 then Win
+  else if player1.health <= 0 then P2
+  else if player2.health <= 0 then P1
   else
     let choice1, choice2 =
       make_choice player1.strategy player2.strategy player1.log player2.log
