@@ -1,9 +1,12 @@
 open OUnit2
 open Rps
 
-let make_player strategy name =
-  { strategy; name; log = []; health = 100; rating = 0 }
+let make_player chooser name =
+  { strategy = { chooser; name }; log = []; health = 100; rating = 0 }
 
+let strategyRock _ _ = Rock
+let strategyPaper _ _ = Paper
+let strategyCounter _ log = match log with h :: _ -> counter_to h | [] -> Rock
 let playerPaper = make_player strategyPaper "paper only"
 let playerRock = make_player strategyRock "rock only"
 let playerCounter = make_player strategyCounter "counterpick"

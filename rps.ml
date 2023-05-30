@@ -1,11 +1,15 @@
-open Printf
+(* open Printf *)
 
 type choice = Rock | Paper | Scissors
 type result = P1 | P2 | Tie
 
-type player = {
-  strategy : choice list -> choice list -> choice;
+type strategy = {
+  chooser : choice list -> choice list -> choice;
   name : string;
+}
+
+type player = {
+  strategy : strategy;
   log : choice list;
   health : int;
   rating : int;
@@ -26,34 +30,26 @@ let string_of_log = string_of_list string_of_rps
 let counter_to = match_rps Paper Scissors Rock
 let beaten_by = match_rps Scissors Rock Paper
 let damage = match_rps 10 10 10
-let strategyRock _ _ = Rock
-let strategyPaper _ _ = Paper
-let strategyCounter _ log = match log with h :: _ -> counter_to h | [] -> Rock
 
-let make_choice strategy1 strategy2 log1 log2 =
-  let choice1 = strategy1 log1 log2 in
-  let choice2 = strategy2 log2 log1 in
+let make_choice chooser1 chooser2 log1 log2 =
+  let choice1 = chooser1 log1 log2 in
+  let choice2 = chooser2 log2 log1 in
   (choice1, choice2)
 
 (**
     returns the winner of two given players, Win iff player1 wins
 *)
-let rec do_battle ?(debug = false) player1 player2 =
+let rec do_battle player1 player2 =
   if player1.health = 0 && player2.health = 0 then Tie
   else if player1.health <= 0 then P2
   else if player2.health <= 0 then P1
   else
     let choice1, choice2 =
-      make_choice player1.strategy player2.strategy player1.log player2.log
-    in
-    let _ =
-      if debug then
-        printf "%s picks: %s, %s picks: %s\n" player1.name
-          (string_of_rps choice1) player2.name (string_of_rps choice2)
-      else ()
+      make_choice player1.strategy.chooser player2.strategy.chooser player1.log
+        player2.log
     in
     if choice1 = beaten_by choice2 then
-      do_battle ~debug
+      do_battle
         {
           player1 with
           health = player1.health - damage choice2;
@@ -61,12 +57,12 @@ let rec do_battle ?(debug = false) player1 player2 =
         }
         { player2 with log = choice2 :: player2.log }
     else if choice1 = counter_to choice2 then
-      do_battle ~debug
+      do_battle
         { player1 with log = choice1 :: player1.log }
         { player2 with health = player2.health - damage choice1 }
     else
       (* both players take damage in event of a tie to prevent infinite recursion *)
-      do_battle ~debug
+      do_battle
         {
           player1 with
           health = player1.health - damage choice2;
