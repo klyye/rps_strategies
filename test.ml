@@ -1,34 +1,30 @@
 open OUnit2
-open Rps
-
-let make_player chooser name =
-  { strategy = { chooser; name }; log = []; health = 100; rating = 0 }
-
-let strategyRock _ _ = Rock
-let strategyPaper _ _ = Paper
-let strategyCounter _ log = match log with h :: _ -> counter_to h | [] -> Rock
-let playerPaper = make_player strategyPaper "paper only"
-let playerRock = make_player strategyRock "rock only"
-let playerCounter = make_player strategyCounter "counterpick"
 
 let rps_tests =
+  let open Rps in
+  let chooserRock = Blind Rock in
+  let chooserPaper = Blind Paper in
+  let chooserCounter =
+    SeesOpponent
+      (fun log -> match log with h :: _ -> counter_to h | [] -> Rock)
+  in
   "test suite for rps"
   >::: [
          ( "paper beats rock" >:: fun _ ->
            assert_equal P1
-             (do_battle playerPaper playerRock)
+             (versus ~p1:chooserPaper ~p2:chooserRock)
              ~printer:string_of_result );
          ( "rock loses to paper" >:: fun _ ->
            assert_equal P2
-             (do_battle playerRock playerPaper)
+             (versus ~p1:chooserRock ~p2:chooserPaper)
              ~printer:string_of_result );
          ( "rock ties to rock" >:: fun _ ->
            assert_equal Tie
-             (do_battle playerRock playerRock)
+             (versus ~p1:chooserRock ~p2:chooserRock)
              ~printer:string_of_result );
          ( "counterpick beats rock" >:: fun _ ->
            assert_equal P1
-             (do_battle playerCounter playerRock)
+             (versus ~p1:chooserCounter ~p2:chooserRock)
              ~printer:string_of_result );
        ]
 
@@ -38,6 +34,7 @@ let string_of_int_pair pair =
   "(" ^ string_of_int f ^ "," ^ string_of_int s ^ ")"
 
 let util_tests =
+  let open Utility in
   "test suite for utils"
   >::: [
          ( "1234 list" >:: fun _ ->
