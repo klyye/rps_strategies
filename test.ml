@@ -26,12 +26,24 @@ let rps_tests =
            assert_equal P1
              (versus ~p1:chooserCounter ~p2:chooserRock)
              ~printer:string_of_result );
+         ( "counterpick beats paper" >:: fun _ ->
+           assert_equal P1
+             (versus ~p1:chooserCounter ~p2:chooserPaper)
+             ~printer:string_of_result );
        ]
 
-(** i miss java tostring *)
-let string_of_int_pair pair =
-  let f, s = pair in
-  "(" ^ string_of_int f ^ "," ^ string_of_int s ^ ")"
+let rating_tests =
+  let open Rating in
+  let abc =
+    empty |> add_player "Alice" |> add_player "Bob" |> add_player "Cody"
+  in
+  "test suite for rating"
+  >::: [
+         ( "empty test" >:: fun _ ->
+           assert_equal None (get_rating "Oh boy" empty) );
+         ( "default rating" >:: fun _ ->
+           assert_equal (Some default_rating) (get_rating "Alice" abc) );
+       ]
 
 let util_tests =
   let open Utility in
@@ -42,6 +54,11 @@ let util_tests =
              [ (1, 2); (1, 3); (1, 4); (2, 3); (2, 4); (3, 4) ]
              (all_pairs [ 1; 2; 3; 4 ]) (* world's jankiest tuple printer *)
              ~printer:(string_of_list string_of_int_pair) );
+         ( "010 list" >:: fun _ ->
+           assert_equal
+             [ (0, 1); (0, 0); (1, 0) ]
+             (all_pairs [ 0; 1; 0 ])
+             ~printer:(string_of_list string_of_int_pair) );
          ( "empty list" >:: fun _ ->
            assert_equal [] (all_pairs [])
              ~printer:(string_of_list string_of_int_pair) );
@@ -49,3 +66,4 @@ let util_tests =
 
 let _ = run_test_tt_main rps_tests
 let _ = run_test_tt_main util_tests
+let _ = run_test_tt_main rating_tests
