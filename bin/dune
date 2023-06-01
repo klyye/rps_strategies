@@ -1,0 +1,4 @@
+(executable
+ (public_name rps_strategies)
+ (name main)
+ (libraries rps_strategies))

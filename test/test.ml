@@ -1,9 +1,11 @@
 open OUnit2
+open Rps_strategies
 
 let rps_tests =
   let open Rps in
   let chooserRock = Blind Rock in
   let chooserPaper = Blind Paper in
+  let chooserScissors = Blind Scissors in
   let chooserCounter =
     SeesOpponent
       (fun log -> match log with h :: _ -> counter_to h | [] -> Rock)
@@ -30,6 +32,10 @@ let rps_tests =
            assert_equal P1
              (versus ~p1:chooserCounter ~p2:chooserPaper)
              ~printer:string_of_result );
+         ( "counterpick beats scissors" >:: fun _ ->
+           assert_equal P1
+             (versus ~p1:chooserCounter ~p2:chooserScissors)
+             ~printer:string_of_result );
        ]
 
 let rating_tests =
@@ -37,12 +43,19 @@ let rating_tests =
   let abc =
     empty |> add_player "Alice" |> add_player "Bob" |> add_player "Cody"
   in
+  let a_beats_b = update_rating ~winning:"Alice" ~losing:"Bob" abc in
   "test suite for rating"
   >::: [
          ( "empty test" >:: fun _ ->
            assert_equal None (get_rating "Oh boy" empty) );
          ( "default rating" >:: fun _ ->
            assert_equal (Some default_rating) (get_rating "Alice" abc) );
+         ( "alice beats bob" >:: fun _ ->
+           assert_bool "Alice should have higher rating than Bob"
+             (get_rating "Alice" a_beats_b > get_rating "Bob" a_beats_b) );
+         ( "loser lower than default rating" >:: fun _ ->
+           assert_bool "Bob should have lower than Cody"
+             (get_rating "Cody" a_beats_b > get_rating "Bob" a_beats_b) );
        ]
 
 let util_tests =
