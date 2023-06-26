@@ -17,3 +17,4 @@ let update_rating ~winning ~losing assoc_lst =
     assoc_lst
 
 let get_rating name assoc_lst = List.assoc_opt name assoc_lst
+let get_names_list assoc_lst = List.map fst assoc_lst

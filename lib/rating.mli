@@ -6,3 +6,4 @@ val add_player : string -> t -> t
 val to_list : t -> (string * int) list
 val update_rating : winning:string -> losing:string -> t -> t
 val get_rating : string -> t -> int option
+val get_names_list : t -> string list
