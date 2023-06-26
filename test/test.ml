@@ -3,13 +3,7 @@ open Rps_strategies
 
 let rps_tests =
   let open Rps in
-  let chooserRock = Blind Rock in
-  let chooserPaper = Blind Paper in
-  let chooserScissors = Blind Scissors in
-  let chooserCounter =
-    SeesOpponent
-      (fun log -> match log with h :: _ -> counter_to h | [] -> Rock)
-  in
+  let open Choosers in
   "test suite for rps"
   >::: [
          ( "paper beats rock" >:: fun _ ->
