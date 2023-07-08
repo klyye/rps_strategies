@@ -7,28 +7,23 @@ let rps_tests =
   "test suite for rps"
   >::: [
          ( "paper beats rock" >:: fun _ ->
-           assert_equal P1
-             (versus ~p1:chooserPaper ~p2:chooserRock)
+           assert_equal P1 (versus ~p1:chooserPaper ~p2:chooserRock).result
              ~printer:string_of_result );
          ( "rock loses to paper" >:: fun _ ->
-           assert_equal P2
-             (versus ~p1:chooserRock ~p2:chooserPaper)
+           assert_equal P2 (versus ~p1:chooserRock ~p2:chooserPaper).result
              ~printer:string_of_result );
          ( "rock ties to rock" >:: fun _ ->
-           assert_equal Tie
-             (versus ~p1:chooserRock ~p2:chooserRock)
+           assert_equal Tie (versus ~p1:chooserRock ~p2:chooserRock).result
              ~printer:string_of_result );
          ( "counterpick beats rock" >:: fun _ ->
-           assert_equal P1
-             (versus ~p1:chooserCounter ~p2:chooserRock)
+           assert_equal P1 (versus ~p1:chooserCounter ~p2:chooserRock).result
              ~printer:string_of_result );
          ( "counterpick beats paper" >:: fun _ ->
-           assert_equal P1
-             (versus ~p1:chooserCounter ~p2:chooserPaper)
+           assert_equal P1 (versus ~p1:chooserCounter ~p2:chooserPaper).result
              ~printer:string_of_result );
          ( "counterpick beats scissors" >:: fun _ ->
            assert_equal P1
-             (versus ~p1:chooserCounter ~p2:chooserScissors)
+             (versus ~p1:chooserCounter ~p2:chooserScissors).result
              ~printer:string_of_result );
        ]
 

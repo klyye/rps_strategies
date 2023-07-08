@@ -1,5 +1,6 @@
 type choice = Rock | Paper | Scissors
 type result = P1 | P2 | Tie
+type rps_game = { p1_log : choice list; p2_log : choice list; result : result }
 
 type chooser =
   | Blind of choice
@@ -33,13 +34,12 @@ let make_choice chooser self_log opponent_log =
 
 (**
     returns the winner of two given players, as well as a log of moves
-    TODO: this is really ugly, find a stateless way to do this?
-    idea: make an rps "game" type that has a winner field, log field, player fields, etc
 *)
 let rec do_battle p1 p2 =
-  if p1.health = 0 && p2.health = 0 then (Tie, p1.log, p2.log)
-  else if p1.health <= 0 then (P2, p1.log, p2.log)
-  else if p2.health <= 0 then (P1, p1.log, p2.log)
+  if p1.health = 0 && p2.health = 0 then
+    { p1_log = p1.log; p2_log = p2.log; result = Tie }
+  else if p1.health <= 0 then { p1_log = p1.log; p2_log = p2.log; result = P2 }
+  else if p2.health <= 0 then { p1_log = p1.log; p2_log = p2.log; result = P1 }
   else
     let choice1 = make_choice p1.chooser p1.log p2.log in
     let choice2 = make_choice p2.chooser p2.log p1.log in
@@ -55,7 +55,4 @@ let rec do_battle p1 p2 =
         { p1 with health = p1.health - damage choice2 }
         { p2 with health = p2.health - damage choice1 }
 
-(* TODO: this is really ugly, find a stateless way to do this? *)
-let versus ~p1 ~p2 =
-  let result, _, _ = do_battle (make_player p1) (make_player p2) in
-  result
+let versus ~p1 ~p2 = do_battle (make_player p1) (make_player p2)
