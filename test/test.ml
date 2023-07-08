@@ -78,6 +78,8 @@ let chooser_tests =
          ( "counterpick multiple turns" >:: fun _ ->
            assert_equal Paper
              (make_choice chooserCounter [ Rock; Paper ] [ Rock; Scissors ]) );
+         ( "cycler picks paper after rock" >:: fun _ ->
+           assert_equal Paper (make_choice chooserCycle [ Rock ] []) );
        ]
 
 let _ = run_test_tt_main battler_tests
