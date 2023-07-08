@@ -1,29 +1,29 @@
 open OUnit2
 open Rps_strategies
 
-let rps_tests =
+let battler_tests =
   let open Battler in
   let open Choosers in
-  "test suite for rps"
+  "test suite for battler"
   >::: [
          ( "paper beats rock" >:: fun _ ->
-           assert_equal P1 (versus ~p1:chooserPaper ~p2:chooserRock).result
+           assert_equal P1 (versus ~p1:chooserPaper ~p2:chooserRock).winner
              ~printer:string_of_winner );
          ( "rock loses to paper" >:: fun _ ->
-           assert_equal P2 (versus ~p1:chooserRock ~p2:chooserPaper).result
+           assert_equal P2 (versus ~p1:chooserRock ~p2:chooserPaper).winner
              ~printer:string_of_winner );
          ( "rock ties to rock" >:: fun _ ->
-           assert_equal Tie (versus ~p1:chooserRock ~p2:chooserRock).result
+           assert_equal Tie (versus ~p1:chooserRock ~p2:chooserRock).winner
              ~printer:string_of_winner );
          ( "counterpick beats rock" >:: fun _ ->
-           assert_equal P1 (versus ~p1:chooserCounter ~p2:chooserRock).result
+           assert_equal P1 (versus ~p1:chooserCounter ~p2:chooserRock).winner
              ~printer:string_of_winner );
          ( "counterpick beats paper" >:: fun _ ->
-           assert_equal P1 (versus ~p1:chooserCounter ~p2:chooserPaper).result
+           assert_equal P1 (versus ~p1:chooserCounter ~p2:chooserPaper).winner
              ~printer:string_of_winner );
          ( "counterpick beats scissors" >:: fun _ ->
            assert_equal P1
-             (versus ~p1:chooserCounter ~p2:chooserScissors).result
+             (versus ~p1:chooserCounter ~p2:chooserScissors).winner
              ~printer:string_of_winner );
        ]
 
@@ -65,6 +65,6 @@ let util_tests =
              ~printer:(string_of_list string_of_int_pair) );
        ]
 
-let _ = run_test_tt_main rps_tests
+let _ = run_test_tt_main battler_tests
 let _ = run_test_tt_main util_tests
 let _ = run_test_tt_main rating_tests
