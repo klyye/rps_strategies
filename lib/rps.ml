@@ -10,7 +10,7 @@ type chooser =
 
 type player = { chooser : chooser; log : choice list; health : int }
 
-let default_health = 100
+let default_health = 9999
 let make_player chooser = { chooser; log = []; health = default_health }
 
 let string_of_result res =
