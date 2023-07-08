@@ -1,7 +1,7 @@
 type t = (string * int) list
 
 let empty = []
-let default_rating = 1000
+let default_rating = 000
 let add_player name assoc_lst = (name, default_rating) :: assoc_lst
 let to_list x = x
 
@@ -16,5 +16,5 @@ let update_rating ~winning ~losing assoc_lst =
         else rating ))
     assoc_lst
 
-let get_rating name assoc_lst = List.assoc_opt name assoc_lst
-let get_names_list assoc_lst = List.map fst assoc_lst
+let rating name assoc_lst = List.assoc_opt name assoc_lst
+let names_list assoc_lst = List.map fst assoc_lst

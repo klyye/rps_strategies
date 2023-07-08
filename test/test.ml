@@ -40,16 +40,15 @@ let rating_tests =
   let a_beats_b = update_rating ~winning:"Alice" ~losing:"Bob" abc in
   "test suite for rating"
   >::: [
-         ( "empty test" >:: fun _ ->
-           assert_equal None (get_rating "Oh boy" empty) );
+         ("empty test" >:: fun _ -> assert_equal None (rating "Oh boy" empty));
          ( "default rating" >:: fun _ ->
-           assert_equal (Some default_rating) (get_rating "Alice" abc) );
+           assert_equal (Some default_rating) (rating "Alice" abc) );
          ( "alice beats bob" >:: fun _ ->
            assert_bool "Alice should have higher rating than Bob"
-             (get_rating "Alice" a_beats_b > get_rating "Bob" a_beats_b) );
+             (rating "Alice" a_beats_b > rating "Bob" a_beats_b) );
          ( "loser lower than default rating" >:: fun _ ->
            assert_bool "Bob should have lower than Cody"
-             (get_rating "Cody" a_beats_b > get_rating "Bob" a_beats_b) );
+             (rating "Cody" a_beats_b > rating "Bob" a_beats_b) );
        ]
 
 let util_tests =
