@@ -17,7 +17,7 @@ let play_matchup table pair =
   let name1, name2 = pair in
   let p1 = Choosers.name_to_chooser name1 in
   let p2 = Choosers.name_to_chooser name2 in
-  match (Rps.versus ~p1 ~p2).result with
+  match (Battler.versus ~p1 ~p2).result with
   | P1 -> Rating.update_rating ~winning:name1 ~losing:name2 table
   | P2 -> Rating.update_rating ~winning:name2 ~losing:name1 table
   | Tie -> table

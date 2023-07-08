@@ -2,29 +2,29 @@ open OUnit2
 open Rps_strategies
 
 let rps_tests =
-  let open Rps in
+  let open Battler in
   let open Choosers in
   "test suite for rps"
   >::: [
          ( "paper beats rock" >:: fun _ ->
            assert_equal P1 (versus ~p1:chooserPaper ~p2:chooserRock).result
-             ~printer:string_of_result );
+             ~printer:string_of_winner );
          ( "rock loses to paper" >:: fun _ ->
            assert_equal P2 (versus ~p1:chooserRock ~p2:chooserPaper).result
-             ~printer:string_of_result );
+             ~printer:string_of_winner );
          ( "rock ties to rock" >:: fun _ ->
            assert_equal Tie (versus ~p1:chooserRock ~p2:chooserRock).result
-             ~printer:string_of_result );
+             ~printer:string_of_winner );
          ( "counterpick beats rock" >:: fun _ ->
            assert_equal P1 (versus ~p1:chooserCounter ~p2:chooserRock).result
-             ~printer:string_of_result );
+             ~printer:string_of_winner );
          ( "counterpick beats paper" >:: fun _ ->
            assert_equal P1 (versus ~p1:chooserCounter ~p2:chooserPaper).result
-             ~printer:string_of_result );
+             ~printer:string_of_winner );
          ( "counterpick beats scissors" >:: fun _ ->
            assert_equal P1
              (versus ~p1:chooserCounter ~p2:chooserScissors).result
-             ~printer:string_of_result );
+             ~printer:string_of_winner );
        ]
 
 let rating_tests =

@@ -1,4 +1,5 @@
 open Rps
+open Chooser
 
 let chooserRock = Blind Rock
 let chooserPaper = Blind Paper
