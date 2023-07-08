@@ -65,6 +65,22 @@ let util_tests =
              ~printer:(string_of_list string_of_int_pair) );
        ]
 
+let chooser_tests =
+  let open Chooser in
+  let open Choosers in
+  let open Rps in
+  "test suite for chooser"
+  >::: [
+         ( "rock chooser chooses rock" >:: fun _ ->
+           assert_equal Rock (make_choice chooserRock [] []) );
+         ( "counterpick picks rock against scissors" >:: fun _ ->
+           assert_equal Rock (make_choice chooserCounter [] [ Scissors ]) );
+         ( "counterpick multiple turns" >:: fun _ ->
+           assert_equal Paper
+             (make_choice chooserCounter [ Rock; Paper ] [ Rock; Scissors ]) );
+       ]
+
 let _ = run_test_tt_main battler_tests
 let _ = run_test_tt_main util_tests
 let _ = run_test_tt_main rating_tests
+let _ = run_test_tt_main chooser_tests
