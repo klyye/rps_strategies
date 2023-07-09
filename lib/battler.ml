@@ -5,7 +5,7 @@ type winner = P1 | P2 | Tie
 type result = { p1_log : choice list; p2_log : choice list; winner : winner }
 type player = { chooser : chooser; log : choice list; health : int }
 
-let default_health = 9
+let default_health = 10
 let make_player chooser = { chooser; log = []; health = default_health }
 let damage = 1
 let string_of_winner x = match x with P1 -> "P1" | P2 -> "P2" | Tie -> "Tie"
@@ -40,4 +40,4 @@ let rec do_battle p1 p2 =
         { p1 with health = p1.health - damage }
         { p2 with health = p2.health - damage }
 
-let versus ~p1 ~p2 = do_battle (make_player p1) (make_player p2)
+let versus ~p1 ~p2 = (do_battle (make_player p1) (make_player p2)).winner

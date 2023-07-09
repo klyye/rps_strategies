@@ -7,23 +7,28 @@ let battler_tests =
   "test suite for battler"
   >::: [
          ( "paper beats rock" >:: fun _ ->
-           assert_equal P1 (versus ~p1:chooserPaper ~p2:chooserRock).winner
+           assert_equal P1
+             (versus ~p1:chooserPaper ~p2:chooserRock)
              ~printer:string_of_winner );
          ( "rock loses to paper" >:: fun _ ->
-           assert_equal P2 (versus ~p1:chooserRock ~p2:chooserPaper).winner
+           assert_equal P2
+             (versus ~p1:chooserRock ~p2:chooserPaper)
              ~printer:string_of_winner );
          ( "rock ties to rock" >:: fun _ ->
-           assert_equal Tie (versus ~p1:chooserRock ~p2:chooserRock).winner
+           assert_equal Tie
+             (versus ~p1:chooserRock ~p2:chooserRock)
              ~printer:string_of_winner );
          ( "counterpick beats rock" >:: fun _ ->
-           assert_equal P1 (versus ~p1:chooserCounter ~p2:chooserRock).winner
+           assert_equal P1
+             (versus ~p1:chooserCounter ~p2:chooserRock)
              ~printer:string_of_winner );
          ( "counterpick beats paper" >:: fun _ ->
-           assert_equal P1 (versus ~p1:chooserCounter ~p2:chooserPaper).winner
+           assert_equal P1
+             (versus ~p1:chooserCounter ~p2:chooserPaper)
              ~printer:string_of_winner );
          ( "counterpick beats scissors" >:: fun _ ->
            assert_equal P1
-             (versus ~p1:chooserCounter ~p2:chooserScissors).winner
+             (versus ~p1:chooserCounter ~p2:chooserScissors)
              ~printer:string_of_winner );
        ]
 

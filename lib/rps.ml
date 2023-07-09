@@ -1,8 +1,5 @@
 type choice = Rock | Paper | Scissors
 
-(* let string_of_result res =
-   match res with P1 -> "P1" | P2 -> "P2" | Tie -> "Tie" *)
-
 let match_rps rock_outcome paper_outcome scissors_outcome choice =
   match choice with
   | Rock -> rock_outcome
