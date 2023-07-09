@@ -17,7 +17,7 @@ let play_matchup table pair =
   let name1, name2 = pair in
   let p1 = Choosers.name_to_chooser name1 in
   let p2 = Choosers.name_to_chooser name2 in
-  match (Battler.versus ~p1 ~p2).result with
+  match (Battler.versus ~p1 ~p2).winner with
   | P1 -> Rating.update_rating ~winning:name1 ~losing:name2 table
   | P2 -> Rating.update_rating ~winning:name2 ~losing:name1 table
   | Tie -> table
@@ -31,5 +31,3 @@ let () =
   let table = play_matchups rating_table in
   let _ = print_string "\n" in
   List.iter (print_rating table) (Rating.names_list table)
-
-(** TODO: make them all play against each other, give them ratings *)
